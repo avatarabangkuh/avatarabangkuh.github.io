@@ -1,4 +1,4 @@
 // config.js
 var config = {
-    githubToken: "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"
+    githubToken: "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"
 };
