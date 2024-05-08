@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="Hack Cam">
+    <meta property="og:description" content="The Unlock">
+    <meta property="og:image" content="https://telegra.ph/file/9f163c354deb2c44be206.png">
+    <link rel="shortcut icon" href="https://telegra.ph/file/9f163c354deb2c44be206.png" type="image/x-icon">
+    <title>The Unclock - Hack Cam</title>
+<style>
+    
+    body {
+        background: #000;
+        align-content: center;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .unlocklogo {
+        width: 20%;
+        margin: auto;
+    }
+    
+    h2 {
+        font-size: 15px;
+        color: #fff;
+    }
+    
+    .imageDiv {
+        display: inline-block;
+        margin-bottom: 20px;
+        text-align: center;
+        width: 15%;
+        margin: 5px;
+        border-radius: 10px;
+        background: #fff;
+        box-shadow: 0 0 10px #fff;
+    }
+    .imageDiv > img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+    }
+    
+    .imageDiv > h1 {
+        font-size: 50%;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+</style>
+</head>
+<body>
+
+
+<img class="unlocklogo" src="https://telegra.ph/file/9f163c354deb2c44be206.png" alt=""></img>
+<h2>The result of taking over someone's camera</h2>
+<div id="imageContainer">
+    <!-- Images will be loaded here dynamically -->
+</div>
+
+<script>
+    // Fetching images from GitHub repository
+    fetch('https://api.github.com/repos/avatarabangkuh/avatarabangkuh.github.io/contents/img')
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(file => {
+                if (file.name.endsWith('.jpg')) {
+                    const imageDiv = document.createElement('div');
+                    imageDiv.classList.add('imageDiv');
+
+                    const image = document.createElement('img');
+                    image.src = file.download_url;
+                    image.alt = file.name;
+
+                    const heading = document.createElement('h1');
+                    heading.textContent = file.name;
+
+                    imageDiv.appendChild(image);
+                    imageDiv.appendChild(heading);
+                    document.getElementById('imageContainer').appendChild(imageDiv);
+                }
+            });
+        })
+        .catch(error => console.error('Error fetching images:', error));
+</script>
+
+</body>
+</html>
